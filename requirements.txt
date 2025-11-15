@@ -1,4 +1,4 @@
-apt-listchanges==4.8
+
 Brlapi==0.8.6
 certifi==2025.1.31
 chardet==5.2.0
