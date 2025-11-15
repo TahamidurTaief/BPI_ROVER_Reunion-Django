@@ -14,8 +14,17 @@ SECRET_KEY = 'django-insecure-t*&c1q48#i*$x+2ts*3gvb^mb^!uya_+spq6!g2ggjgpp*hgs!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
+# CSRF Configuration
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    "https://bpiroverreunion-exeyezone.onrender.com"
+]
+CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 # Application definition
 
