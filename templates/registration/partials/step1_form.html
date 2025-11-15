@@ -1,0 +1,165 @@
+<div class="form-modern" data-aos="fade-in">
+    <form 
+        hx-post="{% url 'htmx_post_step1_form' %}"
+        hx-target="#registration-form-container"
+        hx-swap="innerHTML"
+    >
+        {% csrf_token %}
+        
+        <!-- Step Indicator -->
+        <div class="form-step-indicator">
+            <div class="step-dot active sans">১</div>
+            <div class="step-line"></div>
+            <div class="step-dot sans">২</div>
+        </div>
+        
+        <h2 class="form-title sans">
+            <i data-lucide="clipboard-list" class="inline-block w-8 h-8 mb-2"></i>
+            তথ্য দিন
+        </h2>
+        <p class="text-center text-base-content/70 mb-6 serif -mt-4">
+            অনুগ্রহ করে নিচের ফর্মটি সঠিক তথ্য দিয়ে পূরণ করুন
+        </p>
+
+        {% if errors.general %}
+            <div role="alert" class="alert alert-error mb-5 rounded-xl" style="background: rgba(var(--error), 0.1); border: 2px solid var(--error); color: var(--error);">
+                <i data-lucide="alert-circle" class="w-6 h-6"></i>
+                <span class="font-semibold serif">{{ errors.general }}</span>
+            </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+            
+            <div class="form-control-modern">
+                <label class="sans">
+                    <i data-lucide="user" class="inline-block w-4 h-4"></i>
+                    নাম (Name)
+                    {% if errors.name %}<span class="label-text-alt">{{ errors.name }}</span>{% endif %}
+                </label>
+                <input 
+                    type="text" 
+                    name="name" 
+                    value="{{ data.name|default:'' }}" 
+                    placeholder="আপনার পূর্ণ নাম লিখুন" 
+                    class="{% if errors.name %}input-error{% endif %} sans" 
+                />
+            </div>
+
+            <div class="form-control-modern">
+                <label class="sans">
+                    <i data-lucide="calendar" class="inline-block w-4 h-4"></i>
+                    সেশন (Session)
+                    {% if errors.session %}<span class="label-text-alt">{{ errors.session }}</span>{% endif %}
+                </label>
+                <input 
+                    type="text" 
+                    name="session" 
+                    value="{{ data.session|default:'' }}" 
+                    placeholder="যেমন: 2010-11" 
+                    class="{% if errors.session %}input-error{% endif %} sans" 
+                />
+            </div>
+
+            <div class="form-control-modern">
+                <label class="sans">
+                    <i data-lucide="phone" class="inline-block w-4 h-4"></i>
+                    মোবাইল নম্বর (Contact)
+                    {% if errors.contact_number %}<span class="label-text-alt">{{ errors.contact_number }}</span>{% endif %}
+                </label>
+                <input 
+                    type="text" 
+                    name="contact_number" 
+                    value="{{ data.contact_number|default:'' }}" 
+                    placeholder="যেমন: 01712345678" 
+                    class="{% if errors.contact_number %}input-error{% endif %} sans" 
+                />
+            </div>
+
+            <div class="form-control-modern">
+                <label class="sans">
+                    <i data-lucide="graduation-cap" class="inline-block w-4 h-4"></i>
+                    বিভাগ (Department)
+                    {% if errors.department %}<span class="label-text-alt">{{ errors.department }}</span>{% endif %}
+                </label>
+                <input 
+                    type="text" 
+                    name="department" 
+                    value="{{ data.department|default:'' }}" 
+                    placeholder="যেমন: CSE, EEE" 
+                    class="{% if errors.department %}input-error{% endif %} sans" 
+                />
+            </div>
+
+            <div class="form-control-modern">
+                <label class="sans">
+                    <i data-lucide="users" class="inline-block w-4 h-4"></i>
+                    রেজিস্ট্রেশন ধরন
+                    {% if errors.registration_type %}<span class="label-text-alt">{{ errors.registration_type }}</span>{% endif %}
+                </label>
+                <select 
+                    name="registration_type" 
+                    class="{% if errors.registration_type %}select-error{% endif %} sans"
+                >
+                    <option value="" {% if not data.registration_type %}selected{% endif %} disabled>ধরন নির্বাচন করুন</option>
+                    {% for value, text in reg_types %}
+                    <option value="{{ value }}" {% if data.registration_type == value %}selected{% endif %}>{{ text }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-control-modern">
+                <label class="sans">
+                    <i data-lucide="shirt" class="inline-block w-4 h-4"></i>
+                    টি-শার্ট সাইজ
+                    {% if errors.t_shirt_size %}<span class="label-text-alt">{{ errors.t_shirt_size }}</span>{% endif %}
+                </label>
+                <select 
+                    name="t_shirt_size" 
+                    class="{% if errors.t_shirt_size %}select-error{% endif %} sans"
+                >
+                    <option value="" {% if not data.t_shirt_size %}selected{% endif %} disabled>সাইজ নির্বাচন করুন</option>
+                    {% for value, text in tshirt_sizes %}
+                    <option value="{{ value }}" {% if data.t_shirt_size == value %}selected{% endif %}>{{ text }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-control-modern lg:col-span-3">
+                <label class="sans">
+                    <i data-lucide="award" class="inline-block w-4 h-4"></i>
+                    সর্বশেষ স্কাউট স্তর (Last Scouting Stage)
+                    {% if errors.last_scouting_stage %}<span class="label-text-alt">{{ errors.last_scouting_stage }}</span>{% endif %}
+                </label>
+                <select 
+                    name="last_scouting_stage" 
+                    class="{% if errors.last_scouting_stage %}select-error{% endif %} sans"
+                >
+                    <option value="" {% if not data.last_scouting_stage %}selected{% endif %} disabled>স্তর নির্বাচন করুন</option>
+                    {% for value, text in scout_stages %}
+                    <option value="{{ value }}" {% if data.last_scouting_stage == value %}selected{% endif %}>{{ text }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-control-modern lg:col-span-3">
+                <label class="sans">
+                    <i data-lucide="message-square" class="inline-block w-4 h-4"></i>
+                    প্রোগ্রামের জন্য পরামর্শ (যদি থাকে)
+                </label>
+                <textarea 
+                    name="suggestion" 
+                    class="sans" 
+                    placeholder="আপনার যেকোনো পরামর্শ বা মতামত এখানে লিখুন..." 
+                    rows="3"
+                >{{ data.suggestion|default:'' }}</textarea>
+            </div>
+        </div>
+
+        <div class="flex justify-end mt-6">
+            <button type="submit" class="form-btn-primary sans">
+                পরবর্তী ধাপ (পেমেন্ট)
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </form>
+</div>

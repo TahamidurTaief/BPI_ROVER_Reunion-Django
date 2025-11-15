@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block page_title %}রোভার গ্রুপ পুনর্মিলনী{% endblock page_title %}
+{% block meta_description %}আমাদের কলেজ রোভার গ্রুপের সকল প্রাক্তন সদস্যদের নিয়ে একটি স্মৃতিচারণ ও পুনর্মিলনী অনুষ্ঠান।{% endblock meta_description %}
+
+{% block content %}
+<style>
+    .hero-bg-image {
+        /* Ekhane apnar background image er link din */
+        background-image: url('https://images.unsplash.com/photo-1505521663964-672b1a0e334c?q=80&w=2070&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+    }
+</style>
+
+<div class="hero min-h-[80vh] hero-bg-image">
+    <div class="hero-overlay bg-black bg-opacity-60"></div>
+    <div class="hero-content text-center text-neutral-content">
+        <div class="max-w-2xl">
+            <h1 class="mb-5 text-5xl md:text-7xl font-bold text-white" data-aos="fade-up">
+                রোভার গ্রুপ পুনর্মিলনী
+            </h1>
+            <p class="mb-5 text-lg md:text-xl" data-aos="fade-up" data-aos-delay="200">
+                আমাদের কলেজ রোভার গ্রুপের সকল প্রাক্তন সদস্যদের নিয়ে একটি স্মৃতিচারণ ও পুনর্মিলনী অনুষ্ঠান। আসুন, ফিরে যাই শেকড়ের টানে, মেতে উঠি পুরোনো দিনের স্মরণে।
+            </p>
+            <button 
+                class="btn btn-primary btn-lg"
+                data-aos="fade-up" 
+                data-aos-delay="400"
+                hx-get="{% url 'htmx_get_step1_form' %}"
+                hx-target="#registration-form-container"
+                hx-swap="innerHTML"
+                hx-trigger="click"
+                onclick="document.getElementById('registration-form').scrollIntoView({ behavior: 'smooth' });"
+            >
+                Register Now
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="registration-form" class="py-12 md:py-20 bg-base-200">
+    <div class="container mx-auto px-4">
+        
+        <div id="registration-form-container" class="max-w-3xl mx-auto">
+            <div class="text-center p-8" data-aos="fade-in">
+                <h2 class="text-3xl font-bold mb-4">রেজিস্ট্রেশন করতে উপরের বাটনে ক্লিক করুন</h2>
+                <p class="text-lg">অনুগ্রহ করে আপনার সঠিক তথ্য দিয়ে ফর্মটি পূরণ করুন।</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

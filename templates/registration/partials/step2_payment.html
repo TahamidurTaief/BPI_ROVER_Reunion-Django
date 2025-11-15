@@ -1,0 +1,139 @@
+<div class="form-modern" data-aos="fade-in">
+    <form 
+        hx-post="{% url 'htmx_post_step2_submit' %}"
+        hx-target="#registration-form-container"
+        hx-swap="innerHTML"
+    >
+        {% csrf_token %}
+        
+        <!-- Step Indicator -->
+        <div class="form-step-indicator">
+            <div class="step-dot completed sans">✓</div>
+            <div class="step-line active"></div>
+            <div class="step-dot active sans">২</div>
+        </div>
+        
+        <h2 class="form-title sans">
+            <i data-lucide="credit-card" class="inline-block w-8 h-8 mb-2"></i>
+            পেমেন্ট করুন
+        </h2>
+        <p class="text-center text-base-content/70 mb-6 serif -mt-4">
+            নিচের নির্দেশনা অনুযায়ী পেমেন্ট সম্পন্ন করুন
+        </p>
+
+        <!-- Payment Instructions -->
+        <div role="alert" class="mb-6 rounded-xl p-5" style="background: linear-gradient(135deg, rgba(var(--info), 0.1), rgba(var(--primary), 0.1)); border: 2px solid var(--info);">
+            <div class="flex gap-3">
+                <i data-lucide="info" class="w-7 h-7 shrink-0" style="color: var(--info);"></i>
+                <div class="flex-1">
+                    <h3 class="font-bold text-base mb-2 sans" style="color: var(--title);">
+                        <i data-lucide="arrow-right" class="inline-block w-4 h-4"></i>
+                        পেমেন্ট নির্দেশনা
+                    </h3>
+                    <p class="text-sm mb-3 serif" style="color: var(--desc);">নিচের নম্বরে টাকা পাঠিয়ে পেমেন্টের বিস্তারিত তথ্য প্রদান করুন।</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="p-3 rounded-lg" style="background: rgba(var(--success), 0.15); border: 1px solid var(--success);">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="smartphone" class="w-5 h-5" style="color: var(--success);"></i>
+                                <div>
+                                    <p class="font-bold text-sm sans" style="color: var(--title);">বিকাশ (পার্সোনাল)</p>
+                                    <p class="font-mono text-base font-bold" style="color: var(--success);">01726-833169</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3 rounded-lg" style="background: rgba(var(--warning), 0.15); border: 1px solid var(--warning);">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="smartphone" class="w-5 h-5" style="color: var(--warning);"></i>
+                                <div>
+                                    <p class="font-bold text-sm sans" style="color: var(--title);">নগদ (পার্সোনাল)</p>
+                                    <p class="font-mono text-base font-bold" style="color: var(--warning);">01726-833169</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if errors.general %}
+            <div role="alert" class="alert alert-error mb-5 rounded-xl" style="background: rgba(var(--error), 0.1); border: 2px solid var(--error); color: var(--error);">
+                <i data-lucide="alert-circle" class="w-6 h-6"></i>
+                <span class="font-semibold serif">{{ errors.general }}</span>
+            </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+
+            <div class="form-control-modern">
+                <label class="sans">
+                    <i data-lucide="wallet" class="inline-block w-4 h-4"></i>
+                    পেমেন্ট পদ্ধতি
+                    {% if errors.payment_method %}<span class="label-text-alt">{{ errors.payment_method }}</span>{% endif %}
+                </label>
+                <select 
+                    name="payment_method" 
+                    class="{% if errors.payment_method %}select-error{% endif %} sans"
+                >
+                    <option value="" {% if not data.payment_method %}selected{% endif %} disabled>পদ্ধতি নির্বাচন করুন</option>
+                    {% for value, text in payment_methods %}
+                    <option value="{{ value }}" {% if data.payment_method == value %}selected{% endif %}>{{ text }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-control-modern">
+                <label class="sans">
+                    <i data-lucide="phone" class="inline-block w-4 h-4"></i>
+                    প্রেরকের নম্বর
+                    {% if errors.sender_number %}<span class="label-text-alt">{{ errors.sender_number }}</span>{% endif %}
+                </label>
+                <input 
+                    type="text" 
+                    name="sender_number" 
+                    value="{{ data.sender_number|default:'' }}" 
+                    placeholder="যেমন: 01712345678" 
+                    class="{% if errors.sender_number %}input-error{% endif %} sans" 
+                />
+            </div>
+
+            <div class="form-control-modern">
+                <label class="sans">
+                    <i data-lucide="hash" class="inline-block w-4 h-4"></i>
+                    ট্রানজেকশন আইডি
+                    {% if errors.trxn_id %}<span class="label-text-alt">{{ errors.trxn_id }}</span>{% endif %}
+                </label>
+                <input 
+                    type="text" 
+                    name="trxn_id" 
+                    value="{{ data.trxn_id|default:'' }}" 
+                    placeholder="যেমন: ABC123XYZ456" 
+                    class="{% if errors.trxn_id %}input-error{% endif %} font-mono" 
+                />
+            </div>
+
+        </div>
+
+        <p class="text-xs mt-2 serif" style="color: var(--desc);">
+            <i data-lucide="info" class="inline-block w-3 h-3"></i>
+            পেমেন্ট সম্পন্ন হওয়ার পর যে ম্যাসেজ পাবেন, সেখান থেকে ট্রানজেকশন আইডি কপি করে দিন
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-3 justify-between mt-6">
+            <button 
+                type="button" 
+                class="btn sans"
+                style="background: var(--secondary-bg); color: var(--title); border: 2px solid var(--border-color); padding: 0.875rem 1.75rem; border-radius: 0.65rem; font-weight: 600; transition: all 0.3s ease;"
+                hx-get="{% url 'htmx_get_step1_form' %}"
+                hx-target="#registration-form-container"
+                hx-swap="innerHTML"
+            >
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                পূর্ববর্তী
+            </button>
+            <button type="submit" class="form-btn-primary sans" style="background: var(--gradient-success);">
+                <i data-lucide="check-circle" class="w-5 h-5"></i>
+                রেজিস্ট্রেশন সম্পন্ন করুন
+            </button>
+        </div>
+    </form>
+</div>

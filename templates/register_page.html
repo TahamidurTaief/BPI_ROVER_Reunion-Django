@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block page_title %}রেজিস্ট্রেশন করুন - রোভার পুনর্মিলনী{% endblock page_title %}
+
+{% block content %}
+<div class="py-12 md:py-20 bg-base-200">
+    <div class="container mx-auto px-4">
+        
+        <div 
+            id="registration-form-container" 
+            class="max-w-3xl mx-auto"
+            hx-get="{% url 'htmx_get_step1_form' %}"
+            hx-trigger="load"
+            hx-swap="innerHTML"
+        >
+            <div class="text-center p-12">
+                <span class="loading loading-lg loading-spinner text-primary"></span>
+                <p class="text-lg mt-4">ফর্ম লোড হচ্ছে...</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

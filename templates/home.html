@@ -1,0 +1,1275 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}রোভার গ্রুপ পুনর্মিলনী - হোম{% endblock page_title %}
+
+{% block content %}
+<style>
+    .hero-bg-image {
+        background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.55)), 
+                          url('{% static "img/group_photo2.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    [data-theme="dark"] .hero-bg-image {
+        background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.6)), 
+                          url('{% static "img/group_photo2.jpg" %}');
+    }
+    
+    .hero-bg-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 30% 50%, rgba(30, 64, 175, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 70% 80%, rgba(245, 158, 11, 0.15) 0%, transparent 50%);
+        animation: gradient-shift 15s ease infinite;
+    }
+    
+    @keyframes gradient-shift {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+    
+    /* Floating Animation for Icons */
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+    
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    /* Modern Button Styles */
+    .hero-btn-primary {
+        background: linear-gradient(135deg, #1e40af, #3b82f6);
+        color: white;
+        padding: 0.875rem 2rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+        border: none;
+    }
+    
+    .hero-btn-primary:hover {
+        background: linear-gradient(135deg, #1e3a8a, #2563eb);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
+    }
+    
+    .hero-btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        color: white;
+        padding: 0.875rem 2rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .hero-btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: translateY(-2px);
+    }
+    
+    .stats-card {
+        background: linear-gradient(135deg, rgba(219, 234, 254, 0.9), rgba(191, 219, 254, 0.8));
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(30, 64, 175, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    [data-theme="dark"] .stats-card {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 1), rgba(15, 23, 42, 1));
+        border: 1px solid rgba(96, 165, 250, 0.3);
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    
+    .food-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        position: relative;
+        transition: all 0.4s ease;
+    }
+    
+    [data-theme="dark"] .food-card {
+        background: linear-gradient(135deg, #4c3d8f 0%, #5c2c78 100%);
+    }
+    
+    .food-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        transform: rotate(45deg);
+        transition: all 0.6s ease;
+    }
+    
+    .food-card:hover::before {
+        top: -100%;
+        right: -100%;
+    }
+    
+    .food-card:hover {
+        transform: translateY(-15px);
+        box-shadow: 0 30px 60px -12px rgba(102, 126, 234, 0.5);
+    }
+    
+    .food-card-breakfast {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    
+    [data-theme="dark"] .food-card-breakfast {
+        background: linear-gradient(135deg, #9c4a7d 0%, #a13a4e 100%);
+    }
+    
+    .food-card-lunch {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    [data-theme="dark"] .food-card-lunch {
+        background: linear-gradient(135deg, #2563a8 0%, #0891b2 100%);
+    }
+    
+    .food-card-snacks {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    }
+    
+    [data-theme="dark"] .food-card-snacks {
+        background: linear-gradient(135deg, #15803d 0%, #0d9488 100%);
+    }
+    
+    .timeline-modern {
+        position: relative;
+    }
+    
+    .timeline-card {
+        background: white;
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border-left: 4px solid;
+    }
+    
+    [data-theme="dark"] .timeline-card {
+        background: #0f172a;
+    }
+    
+    .timeline-card:nth-child(1) { border-left-color: #f59e0b; }
+    .timeline-card:nth-child(2) { border-left-color: #8b5cf6; }
+    .timeline-card:nth-child(3) { border-left-color: #10b981; }
+    .timeline-card:nth-child(4) { border-left-color: #3b82f6; }
+    
+    .timeline-card:hover {
+        transform: translateX(10px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* FAQ Section - Using CSS Variables */
+    .faq-item {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        background: var(--card);
+        border: 2px solid var(--border-color);
+    }
+    
+    .faq-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: var(--faq-gradient);
+        transform: scaleY(0);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .faq-item:hover::before {
+        transform: scaleY(1);
+    }
+    
+    .faq-item:hover {
+        transform: translateX(4px);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+        border-color: var(--primary);
+    }
+    
+    [data-theme="dark"] .faq-item:hover {
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+    }
+    
+    .faq-item-purple {
+        --faq-gradient: var(--gradient-royal);
+        --faq-bg: var(--color-ex-student);
+    }
+    
+    .faq-item-blue {
+        --faq-gradient: var(--gradient-cool);
+        --faq-bg: var(--info);
+    }
+    
+    .faq-item-green {
+        --faq-gradient: var(--gradient-success);
+        --faq-bg: var(--color-student);
+    }
+    
+    .faq-item-orange {
+        --faq-gradient: var(--gradient-sunset);
+        --faq-bg: var(--color-scout);
+    }
+    
+    .faq-icon-wrapper {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        background: var(--faq-gradient);
+    }
+    
+    .faq-item:hover .faq-icon-wrapper {
+        transform: rotate(5deg) scale(1.1);
+    }
+    
+    .collapse-title {
+        padding: 1.5rem !important;
+        color: var(--title);
+    }
+    
+    .collapse-content {
+        padding: 0 1.5rem 1.5rem 1.5rem !important;
+        color: var(--desc);
+    }
+    
+    @media (max-width: 768px) {
+        .collapse-title {
+            padding: 1rem !important;
+            font-size: 1rem !important;
+        }
+        
+        .faq-icon-wrapper {
+            width: 40px;
+            height: 40px;
+        }
+    }
+    
+    .cta-button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        box-shadow: 0 10px 25px -5px rgba(102, 126, 234, 0.5);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .cta-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.5s ease;
+    }
+    
+    .cta-button:hover::before {
+        left: 100%;
+    }
+    
+    .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 35px -5px rgba(102, 126, 234, 0.7);
+    }
+    
+    .section-badge {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+    }
+    
+    .badge-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    [data-theme="dark"] .badge-primary {
+        background: linear-gradient(135deg, #4c3d8f, #5c2c78);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+    }
+    
+    .icon-wrapper {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .icon-wrapper-orange {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+    }
+    
+    [data-theme="dark"] .icon-wrapper-orange {
+        background: linear-gradient(135deg, #92400e, #78350f);
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    }
+    
+    .icon-wrapper-purple {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+    }
+    
+    [data-theme="dark"] .icon-wrapper-purple {
+        background: linear-gradient(135deg, #5b21b6, #4c1d95);
+        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+    }
+    
+    .icon-wrapper-green {
+        background: linear-gradient(135deg, #10b981, #059669);
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    }
+    
+    [data-theme="dark"] .icon-wrapper-green {
+        background: linear-gradient(135deg, #065f46, #064e3b);
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+    
+    .icon-wrapper-blue {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    }
+    
+    [data-theme="dark"] .icon-wrapper-blue {
+        background: linear-gradient(135deg, #1e40af, #1e3a8a);
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    }
+    
+    .timeline-card:hover .icon-wrapper {
+        transform: scale(1.2) rotate(360deg);
+    }
+    
+    /* Modern Registration Form Styles */
+    .form-modern {
+        background: var(--card);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.15);
+        border: 2px solid var(--border-color);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .form-modern::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: var(--gradient-primary);
+    }
+    
+    [data-theme="dark"] .form-modern {
+        background: #0a1929;
+        box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .form-modern:hover {
+        box-shadow: 0 25px 70px -10px rgba(0, 0, 0, 0.25);
+        transform: translateY(-2px);
+    }
+    
+    .form-step-indicator {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        gap: 1rem;
+        padding: 1rem;
+        background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.05), rgba(var(--secondary-rgb), 0.05));
+        border-radius: 1rem;
+    }
+    
+    [data-theme="dark"] .form-step-indicator {
+        background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(251, 191, 36, 0.1));
+    }
+    
+    .step-dot {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--secondary-bg);
+        border: 3px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        color: var(--desc);
+        font-size: 1.1rem;
+    }
+    
+    .step-dot.active {
+        background: var(--gradient-primary);
+        color: white;
+        transform: scale(1.15);
+        box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.4);
+        border-color: transparent;
+    }
+    
+    .step-dot.completed {
+        background: var(--gradient-success);
+        color: white;
+        border-color: transparent;
+    }
+    
+    .step-line {
+        width: 50px;
+        height: 4px;
+        background: var(--border-color);
+        border-radius: 2px;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .step-line.active::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--gradient-primary);
+        animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+    
+    .form-control-modern {
+        margin-bottom: 1rem;
+    }
+    
+    .form-control-modern label {
+        display: block;
+        margin-bottom: 0.4rem;
+        font-weight: 600;
+        color: var(--title);
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+    
+    .form-control-modern input,
+    .form-control-modern select,
+    .form-control-modern textarea {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 0.65rem;
+        background: var(--bg);
+        color: var(--title);
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        outline: none;
+    }
+    
+    [data-theme="dark"] .form-control-modern input,
+    [data-theme="dark"] .form-control-modern select,
+    [data-theme="dark"] .form-control-modern textarea {
+        background: #0f172a;
+        border-color: rgba(96, 165, 250, 0.2);
+    }
+    
+    .form-control-modern input:focus,
+    .form-control-modern select:focus,
+    .form-control-modern textarea:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+        transform: translateY(-1px);
+    }
+    
+    .form-control-modern input::placeholder,
+    .form-control-modern textarea::placeholder {
+        color: var(--desc);
+        opacity: 0.6;
+    }
+    
+    .form-control-modern .input-error,
+    .form-control-modern .select-error {
+        border-color: var(--error);
+    }
+    
+    .form-control-modern .label-text-alt {
+        color: var(--error);
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+    
+    .form-btn-primary {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 0.875rem 2rem;
+        border-radius: 0.65rem;
+        font-weight: 600;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.3);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .form-btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(var(--primary-rgb), 0.4);
+    }
+    
+    .form-btn-primary:active {
+        transform: translateY(-1px);
+    }
+    
+    .form-title {
+        text-align: center;
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: var(--title);
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 0.75rem;
+    }
+    
+    .form-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--gradient-primary);
+        border-radius: 2px;
+    }
+    
+    @media (max-width: 768px) {
+        .form-modern {
+            padding: 1.25rem;
+        }
+        
+        .form-title {
+            font-size: 1.4rem;
+        }
+        
+        .step-dot {
+            width: 36px;
+            height: 36px;
+            font-size: 0.95rem;
+        }
+        
+        .step-line {
+            width: 35px;
+        }
+        
+        .form-control-modern {
+            margin-bottom: 0.75rem;
+        }
+    }
+    
+    .form-step-indicator {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 2rem;
+        gap: 1rem;
+    }
+    
+    .step-dot {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    
+    .step-dot.active {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        transform: scale(1.2);
+    }
+    
+    .step-dot.completed {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+    }
+    
+    .step-line {
+        width: 50px;
+        height: 3px;
+        background: #e5e7eb;
+        transition: all 0.3s ease;
+    }
+    
+    .step-line.active {
+        background: linear-gradient(90deg, #667eea, #764ba2);
+    }
+</style>
+
+<!-- Hero Section with Modern Design -->
+<div class="hero-bg-image">
+    <div class="hero-content text-center relative z-10 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="mb-8" data-aos="fade-down">
+                <span class="inline-block px-6 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold text-sm sans">স্বাগতম</span>
+            </div>
+            
+            <h1 class="mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-white sans" data-aos="fade-up" data-aos-delay="100">
+                ফিরে যাই <span class="text-green-300">শেকড়ের টানে</span>
+            </h1>
+            
+            <h2 class="mb-6 text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-100 sans" data-aos="fade-up" data-aos-delay="200">
+                <i data-lucide="tent" class="inline-block w-6 h-6 md:w-8 md:h-8"></i> 
+                রোভার স্কাউট পুনর্মিলনী ২০২৫ 
+                <i data-lucide="tent" class="inline-block w-6 h-6 md:w-8 md:h-8"></i>
+            </h2>
+            
+            <p class="mb-10 text-base md:text-lg lg:text-xl leading-relaxed max-w-3xl mx-auto text-neutral-100 serif" data-aos="fade-up" data-aos-delay="300">
+                আমাদের কলেজ রোভার স্কাউট গ্রুপের সকল প্রাক্তন সদস্যদের নিয়ে একটি অবিস্মরণীয় স্মৃতিচারণ ও পুনর্মিলনী অনুষ্ঠান। আসুন, মেতে উঠি পুরোনো দিনের স্মরণে এবং নতুন স্মৃতি তৈরি করি।
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12" data-aos="fade-up" data-aos-delay="400">
+                <a 
+                    href="#registration-form"
+                    class="hero-btn-primary sans"
+                >
+                    <i data-lucide="user-plus" class="w-5 h-5"></i>
+                    এখনই রেজিস্ট্রেশন করুন
+                </a>
+                <a href="#schedule" class="hero-btn-secondary sans">
+                    <i data-lucide="info" class="w-5 h-5"></i>
+                    বিস্তারিত দেখুন
+                </a>
+            </div>
+            
+            <!-- Role Categories -->
+            <div class="flex flex-wrap justify-center gap-3 md:gap-4" data-aos="fade-up" data-aos-delay="500">
+                <div class="badge-student flex items-center gap-2 sans">
+                    <i data-lucide="graduation-cap" class="w-4 h-4 md:w-5 md:h-5"></i>
+                    <span class="text-sm md:text-base">বর্তমান শিক্ষার্থী</span>
+                </div>
+                <div class="badge-ex-student flex items-center gap-2 sans">
+                    <i data-lucide="award" class="w-4 h-4 md:w-5 md:h-5"></i>
+                    <span class="text-sm md:text-base">প্রাক্তন সদস্য</span>
+                </div>
+                <div class="badge-teacher flex items-center gap-2 sans">
+                    <i data-lucide="user" class="w-4 h-4 md:w-5 md:h-5"></i>
+                    <span class="text-sm md:text-base">শিক্ষক</span>
+                </div>
+                <div class="badge-scout flex items-center gap-2 sans">
+                    <i data-lucide="compass" class="w-4 h-4 md:w-5 md:h-5"></i>
+                    <span class="text-sm md:text-base">স্কাউট নেতা</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll Down Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10" data-aos="fade-up" data-aos-delay="600">
+        <a href="#schedule" class="animate-bounce inline-block">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-10 md:w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+        </a>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-16 md:py-20 space-y-20 md:space-y-32">
+
+    <!-- Event Schedule Section -->
+    <section id="schedule" class="pt-10">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="badge-primary section-badge sans">ইভেন্ট প্রোগ্রাম</span>
+            <h2 class="text-5xl md:text-6xl font-extrabold text-[var(--gradient-sunset)] mb-4 sans">
+                <i data-lucide="calendar-days" class="inline-block w-12 h-12 mb-2"></i>
+                সময়সূচী
+            </h2>
+            <p class="text-xl text-base-content/70 max-w-2xl mx-auto serif">
+                একটি দিন, অসংখ্য স্মৃতি। দেখে নিন পুরো দিনের কর্মসূচী।
+            </p>
+        </div>
+
+        <!-- Event Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16" data-aos="fade-up" data-aos-delay="100">
+            <div class="stats-card rounded-2xl p-8 text-center">
+                <div class="icon-wrapper icon-wrapper-orange mx-auto mb-4">
+                    <i data-lucide="calendar-check" class="w-8 h-8 text-white"></i>
+                </div>
+                <div class="text-sm font-semibold text-base-content/60 uppercase tracking-wider sans">তারিখ</div>
+                <div class="text-4xl font-bold text-primary my-2 sans">৩০ নভেম্বর</div>
+                <div class="text-lg text-base-content/70 serif">শনিবার, ২০২৫</div>
+            </div>
+            
+            <div class="stats-card rounded-2xl p-8 text-center">
+                <div class="icon-wrapper icon-wrapper-purple mx-auto mb-4">
+                    <i data-lucide="clock" class="w-8 h-8 text-white"></i>
+                </div>
+                <div class="text-sm font-semibold text-base-content/60 uppercase tracking-wider sans">সময়</div>
+                <div class="text-4xl font-bold text-purple-600 my-2 sans">৯টা - ৫টা</div>
+                <div class="text-lg text-base-content/70 serif">সকাল থেকে বিকাল</div>
+            </div>
+            
+            <div class="stats-card rounded-2xl p-8 text-center">
+                <div class="icon-wrapper icon-wrapper-green mx-auto mb-4">
+                    <i data-lucide="map-pin" class="w-8 h-8 text-white"></i>
+                </div>
+                <div class="text-sm font-semibold text-base-content/60 uppercase tracking-wider sans">স্থান</div>
+                <div class="text-4xl font-bold text-green-600 my-2 sans">কলেজ</div>
+                <div class="text-lg text-base-content/70 serif">আমাদের প্রিয় ক্যাম্পাস</div>
+            </div>
+        </div>
+
+        <!-- Centered Timeline with Vertical Line -->
+        <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical mt-12">
+            <li data-aos="fade-right">
+                <div class="timeline-middle">
+                    <div class="icon-wrapper icon-wrapper-orange">
+                        <i data-lucide="coffee" class="w-6 h-6 text-white"></i>
+                    </div>
+                </div>
+                <div class="timeline-start md:text-end mb-10">
+                    <time class="font-mono italic text-[var(--info)] font-bold">সকাল ৯:০০ - ১০:০০</time>
+                    <div class="text-2xl font-black sans text-base-content mt-2">রিপোর্টিং ও সকালের নাস্তা</div>
+                    <p class="serif text-base-content/70 mt-2">সকলের উপস্থিতি নিবন্ধন, স্বাগত পানীয়, এবং বিশেষ স্যুভেনির টি-শার্ট ও গিফট সংগ্রহ। সবার সাথে দেখা হওয়ার প্রথম মুহূর্ত!</p>
+                </div>
+                <hr class="bg-primary"/>
+            </li>
+            
+            <li data-aos="fade-left">
+                <hr class="bg-primary"/>
+                <div class="timeline-middle">
+                    <div class="icon-wrapper icon-wrapper-purple">
+                        <i data-lucide="mic" class="w-6 h-6 text-white"></i>
+                    </div>
+                </div>
+                <div class="timeline-end mb-10">
+                    <time class="font-mono italic text-[var(--info)] font-bold">সকাল ১০:০০ - ১১:৩০</time>
+                    <div class="text-2xl font-black sans text-base-content mt-2">উদ্বোধনী অনুষ্ঠান ও স্মৃতিচারণ</div>
+                    <p class="serif text-base-content/70 mt-2">প্রধান অতিথির ভাষণ, প্রাক্তন সদস্যদের স্মৃতিচারণ, পুরোনো ছবি ও ভিডিও প্রদর্শনী। সেই দিনগুলো ফিরে আসবে!</p>
+                </div>
+                <hr class="bg-primary"/>
+            </li>
+            
+            <li data-aos="fade-right">
+                <hr class="bg-primary"/>
+                <div class="timeline-middle">
+                    <div class="icon-wrapper icon-wrapper-green">
+                        <i data-lucide="utensils" class="w-6 h-6 text-white"></i>
+                    </div>
+                </div>
+                <div class="timeline-start md:text-end mb-10">
+                    <time class="font-mono italic text-[var(--info)] font-bold">দুপুর ১:৩০ - ২:৩০</time>
+                    <div class="text-2xl font-black sans text-base-content mt-2">দুপুরের খাবার ও নামাজ</div>
+                    <p class="serif text-base-content/70 mt-2">বিশেষ বুফে লাঞ্চ - কাচ্চি বিরিয়ানি, চিকেন রোস্ট, এবং আরও অনেক কিছু! খাবারের পাশাপাশি গল্প আর হাসি।</p>
+                </div>
+                <hr class="bg-primary"/>
+            </li>
+            
+            <li data-aos="fade-left">
+                <hr class="bg-primary"/>
+                <div class="timeline-middle">
+                    <div class="icon-wrapper icon-wrapper-blue">
+                        <i data-lucide="gift" class="w-6 h-6 text-white"></i>
+                    </div>
+                </div>
+                <div class="timeline-end mb-10">
+                    <time class="font-mono italic text-[var(--info)]font-bold">বিকাল ৪:০০ - ৫:০০</time>
+                    <div class="text-2xl font-black sans text-base-content mt-2">সমাপনী ও র‍্যাফেল ড্র</div>
+                    <p class="serif text-base-content/70 mt-2">আকর্ষণীয় পুরস্কার বিতরণ, র‍্যাফেল ড্র, গ্রুপ ফটো সেশন এবং বিদায়ী সম্ভাষণ। শেষ হবে কিন্তু স্মৃতি থাকবে চিরকাল!</p>
+                </div>
+            </li>
+        </ul>
+    </section>
+    
+    <div class="divider my-20"></div>
+
+    <!-- Food Menu Section -->
+    <section id="menu" class="pt-10">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="badge-primary section-badge sans">খাবার মেনু</span>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-800 dark:text-emerald-400 mb-4 sans">
+                <i data-lucide="utensils-crossed" class="inline-block w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 mb-2"></i>
+                খাবার তালিকা
+            </h2>
+            <p class="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto serif">
+                স্বাদে ভরপুর একটি দিন। বিশেষভাবে প্রস্তুতকৃত মুখরোচক খাবার।
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="food-card food-card-breakfast shadow-2xl p-8 relative overflow-hidden" data-aos="zoom-in" data-aos-delay="100">
+                <div class="relative z-10">
+                    <i data-lucide="coffee" class="w-16 h-16 mb-4"></i>
+                    <h3 class="text-3xl font-bold mb-6 sans">সকালের নাস্তা</h3>
+                    <ul class="space-y-3 text-lg serif">
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                            <span>পরোটা (২টি) - গরম গরম</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                            <span>সবজি ভাজি - তাজা</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                            <span>ডিম ওমলেট - স্পেশাল</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                            <span>মিনারেল ওয়াটার</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="food-card food-card-lunch shadow-2xl p-8 relative overflow-hidden" data-aos="zoom-in" data-aos-delay="200">
+                <div class="relative z-10">
+                    <i data-lucide="soup" class="w-16 h-16 mb-4"></i>
+                    <h3 class="text-3xl font-bold mb-6 sans">দুপুরের খাবার</h3>
+                    <ul class="space-y-3 text-lg serif">
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                            <span>কাচ্চি বিরিয়ানি (বাসমতি)</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                            <span>চিকেন রোস্ট - জুসি</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                            <span>কাবাব - স্পাইসি</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                            <span>বোরহানি - ঠান্ডা</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                            <span>মিষ্টি - মুখ মিষ্টি করার জন্য</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="food-card food-card-snacks shadow-2xl p-8 relative overflow-hidden" data-aos="zoom-in" data-aos-delay="300">
+                <div class="relative z-10">
+                    <i data-lucide="cup-soda" class="w-16 h-16 mb-4"></i>
+                    <h3 class="text-3xl font-bold mb-6 sans">বিকালের নাস্তা</h3>
+                    <ul class="space-y-3 text-lg serif">
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                            <span>সিঙ্গারা / সমুচা - কুরকুরে</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                            <span>চা / কফি - গরম</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                            <span>বিস্কুট - মচমচে</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                            <span>চকলেট - মিষ্টি</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider my-20"></div>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="pt-10 max-w-6xl mx-auto px-4 relative">
+        <!-- Floating Animated Icons -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20 dark:opacity-10">
+            <img src="{% static 'img/logo.webp' %}" alt="Scout Logo" class="absolute top-10 left-10 w-16 h-16 animate-float" style="animation-delay: 0s;">
+            <img src="{% static 'img/scout_logo.png' %}" alt="Scout Badge" class="absolute top-32 right-20 w-20 h-20 animate-float" style="animation-delay: 1s;">
+            <i class="fas fa-handshake absolute bottom-20 left-20 text-5xl text-primary animate-float" style="animation-delay: 2s;"></i>
+            <i class="fas fa-heart absolute top-40 right-10 text-4xl text-error animate-float" style="animation-delay: 1.5s;"></i>
+            <i class="fas fa-users absolute bottom-32 right-32 text-5xl text-success animate-float" style="animation-delay: 0.5s;"></i>
+        </div>
+        
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="badge-primary section-badge sans">প্রশ্ন-উত্তর</span>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-[var(--title)] mb-4 sans relative inline-block">
+                <i data-lucide="help-circle" class="inline-block w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 mb-2"></i>
+                সাধারণ জিজ্ঞাসা
+                <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--primary)] via-[var(--secondary)] to-[var(--primary)] rounded-full"></span>
+                <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--primary)] via-[var(--secondary)] to-[var(--primary)] rounded-full animate-pulse"></span>
+            </h2>
+            <p class="text-base sm:text-lg md:text-xl text-[var(--desc)] max-w-2xl mx-auto serif mt-4">
+                আপনার মনের সব প্রশ্নের উত্তর এখানে পাবেন।
+            </p>
+        </div>
+        
+        <div class="space-y-3 sm:space-y-4" data-aos="fade-up">
+            <!-- FAQ Item 1 -->
+            <div class="faq-item faq-item-purple collapse collapse-plus rounded-xl sm:rounded-2xl shadow-md hover:shadow-2xl">
+                <input type="radio" name="my-accordion-3" checked="checked" /> 
+                <div class="collapse-title text-base sm:text-lg md:text-xl font-bold flex items-center gap-2 sm:gap-3 sans">
+                    <div class="faq-icon-wrapper flex-shrink-0">
+                        <i data-lucide="dollar-sign" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
+                    </div>
+                    <span>রেজিস্ট্রেশন ফি কত?</span>
+                </div>
+                <div class="collapse-content text-sm sm:text-base md:text-lg serif"> 
+                    <div class="space-y-3 sm:space-y-4 mt-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--color-ex-student), 0.1); border-color: var(--color-ex-student);">
+                                <span class="badge badge-ex-student text-xs sm:text-sm whitespace-nowrap">প্রাক্তন রোভার</span>
+                                <span class="font-bold text-lg sm:text-xl" style="color: var(--color-ex-student);">৫০০ টাকা</span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--color-teacher), 0.1); border-color: var(--color-teacher);">
+                                <span class="badge badge-teacher text-xs sm:text-sm whitespace-nowrap">স্পাউস/গেস্ট</span>
+                                <span class="font-bold text-lg sm:text-xl" style="color: var(--color-teacher);">৪০০ টাকা</span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--color-student), 0.1); border-color: var(--color-student);">
+                                <span class="badge badge-student text-xs sm:text-sm whitespace-nowrap">শিশু (৫ বছর+)</span>
+                                <span class="font-bold text-lg sm:text-xl" style="color: var(--color-student);">৩০০ টাকা</span>
+                            </div>
+                        </div>
+                        <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border-l-4" style="background: rgba(var(--warning), 0.1); border-color: var(--warning);">
+                            <p class="text-xs sm:text-sm flex items-start gap-2">
+                                <i data-lucide="alert-triangle" class="w-4 h-4 sm:w-5 sm:h-5 mt-0.5 flex-shrink-0" style="color: var(--warning);"></i>
+                                <span>৫ বছরের কম শিশুদের জন্য কোন ফি নেই কিন্তু খাবার ও গিফট পাবে না।</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- FAQ Item 2 -->
+            <div class="faq-item faq-item-blue collapse collapse-plus rounded-xl sm:rounded-2xl shadow-md hover:shadow-2xl">
+                <input type="radio" name="my-accordion-3" /> 
+                <div class="collapse-title text-base sm:text-lg md:text-xl font-bold flex items-center gap-2 sm:gap-3 sans">
+                    <div class="faq-icon-wrapper flex-shrink-0">
+                        <i data-lucide="file-text" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
+                    </div>
+                    <span>আমি কি স্পট রেজিস্ট্রেশন করতে পারব?</span>
+                </div>
+                <div class="collapse-content text-sm sm:text-base md:text-lg serif"> 
+                    <div class="space-y-3 sm:space-y-4 mt-2">
+                        <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border-l-4" style="background: rgba(var(--error), 0.1); border-color: var(--error);">
+                            <p class="flex items-start gap-2">
+                                <i data-lucide="x-circle" class="w-5 h-5 sm:w-6 sm:h-6 mt-0.5 flex-shrink-0" style="color: var(--error);"></i>
+                                <span><strong>না, দুঃখিত।</strong> খাবারের আয়োজন এবং উপহার নিশ্চিত করার জন্য আমাদের আগে থেকেই রেজিস্ট্রেশন বন্ধ করতে হবে।</span>
+                            </p>
+                        </div>
+                        <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border" style="background: rgba(var(--warning), 0.1); border-color: var(--warning);">
+                            <div class="flex items-start gap-2 sm:gap-3">
+                                <i data-lucide="alert-triangle" class="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" style="color: var(--warning);"></i>
+                                <div>
+                                    <p class="font-bold mb-1">গুরুত্বপূর্ণ:</p>
+                                    <p>স্পট রেজিস্ট্রেশনের কোনো সুযোগ নেই। তাই এখনই রেজিস্ট্রেশন সম্পন্ন করুন!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- FAQ Item 3 -->
+            <div class="faq-item faq-item-green collapse collapse-plus rounded-xl sm:rounded-2xl shadow-md hover:shadow-2xl">
+                <input type="radio" name="my-accordion-3" /> 
+                <div class="collapse-title text-base sm:text-lg md:text-xl font-bold flex items-center gap-2 sm:gap-3 sans">
+                    <div class="faq-icon-wrapper flex-shrink-0">
+                        <i data-lucide="users" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
+                    </div>
+                    <span>আমি কি আমার পরিবারকে সাথে আনতে পারব?</span>
+                </div>
+                <div class="collapse-content text-sm sm:text-base md:text-lg serif"> 
+                    <div class="space-y-3 sm:space-y-4 mt-2">
+                        <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border-l-4" style="background: rgba(var(--success), 0.1); border-color: var(--success);">
+                            <p class="flex items-start gap-2">
+                                <i data-lucide="check-circle" class="w-5 h-5 sm:w-6 sm:h-6 mt-0.5 flex-shrink-0" style="color: var(--success);"></i>
+                                <span><strong>হ্যাঁ, অবশ্যই!</strong> পরিবারের সবাইকে নিয়ে আসুন। আপনার প্রিয়জনদের সাথে এই বিশেষ মুহূর্তগুলো শেয়ার করুন।</span>
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                            <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--color-teacher), 0.1); border-color: var(--color-teacher);">
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="heart" class="w-5 h-5 flex-shrink-0 mt-0.5" style="color: var(--color-teacher);"></i>
+                                    <div>
+                                        <p class="font-bold text-sm sm:text-base mb-1">স্পাউস/গেস্ট</p>
+                                        <p class="text-xs sm:text-sm">Spouse/Guest ক্যাটাগরিতে রেজিস্ট্রেশন করুন</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--info), 0.1); border-color: var(--info);">
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="baby" class="w-5 h-5 flex-shrink-0 mt-0.5" style="color: var(--info);"></i>
+                                    <div>
+                                        <p class="font-bold text-sm sm:text-base mb-1">শিশু (৫ বছর+)</p>
+                                        <p class="text-xs sm:text-sm">Children ক্যাটাগরিতে রেজিস্ট্রেশন করুন</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--color-ex-student), 0.1); border-color: var(--color-ex-student);">
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="milk" class="w-5 h-5 flex-shrink-0 mt-0.5" style="color: var(--color-ex-student);"></i>
+                                    <div>
+                                        <p class="font-bold text-sm sm:text-base mb-1">শিশু (৫ বছরের কম)</p>
+                                        <p class="text-xs sm:text-sm">ফ্রি এন্ট্রি (খাবার ও গিফট ছাড়া)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- FAQ Item 4 -->
+            <div class="faq-item faq-item-orange collapse collapse-plus rounded-xl sm:rounded-2xl shadow-md hover:shadow-2xl">
+                <input type="radio" name="my-accordion-3" /> 
+                <div class="collapse-title text-base sm:text-lg md:text-xl font-bold flex items-center gap-2 sm:gap-3 sans">
+                    <div class="faq-icon-wrapper flex-shrink-0">
+                        <i data-lucide="credit-card" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
+                    </div>
+                    <span>পেমেন্ট কিভাবে করব?</span>
+                </div>
+                <div class="collapse-content text-sm sm:text-base md:text-lg serif"> 
+                    <div class="space-y-3 sm:space-y-4 mt-2">
+                        <p class="font-medium">রেজিস্ট্রেশন সম্পন্ন করার পর আপনাকে পেমেন্ট অপশন দেখানো হবে। পেমেন্ট পদ্ধতি:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                            <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--success), 0.1); border-color: var(--success);">
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="smartphone" class="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" style="color: var(--success);"></i>
+                                    <div>
+                                        <p class="font-bold text-sm sm:text-base">মোবাইল ব্যাংকিং</p>
+                                        <p class="text-xs sm:text-sm mt-1">বিকাশ / নগদ / রকেট</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--info), 0.1); border-color: var(--info);">
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="landmark" class="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" style="color: var(--info);"></i>
+                                    <div>
+                                        <p class="font-bold text-sm sm:text-base">ব্যাংক ট্রান্সফার</p>
+                                        <p class="text-xs sm:text-sm mt-1">সরাসরি হিসাবে</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--warning), 0.1); border-color: var(--warning);">
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="banknote" class="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" style="color: var(--warning);"></i>
+                                    <div>
+                                        <p class="font-bold text-sm sm:text-base">ক্যাশ পেমেন্ট</p>
+                                        <p class="text-xs sm:text-sm mt-1">নির্দিষ্ট সংগ্রাহকের কাছে</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider my-20"></div>
+
+    <!-- Registration Form Section with HTMX -->
+    <section id="registration-form" class="pt-10">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <span class="badge-primary section-badge sans">এখনই যুক্ত হন</span>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-800 dark:text-blue-400 mb-4 sans">
+                <i data-lucide="clipboard-list" class="inline-block w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 mb-2"></i>
+                রেজিস্ট্রেশন করুন
+            </h2>
+            <p class="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto serif">
+                আপনার আসনটি এখনই নিশ্চিত করুন এবং এই অবিস্মরণীয় পুনর্মিলনের অংশ হন!
+            </p>
+        </div>
+        
+        <!-- Registration Form Container with HTMX -->
+        <div id="registration-form-container" class="w-full" 
+             hx-get="{% url 'htmx_get_step1_form' %}"
+             hx-trigger="intersect once"
+             hx-swap="innerHTML">
+            <!-- Loading State -->
+            <div class="modern-card text-center p-12 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-900" data-aos="fade-in">
+                <div class="text-6xl mb-6">⏳</div>
+                <h3 class="text-2xl font-bold mb-4 text-base-content">ফর্ম লোড হচ্ছে...</h3>
+                <p class="text-lg text-base-content/70">
+                    অনুগ্রহ করে অপেক্ষা করুন, আপনার রেজিস্ট্রেশন ফর্ম প্রস্তুত করা হচ্ছে।
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <div class="divider my-20"></div>
+
+    <!-- Terms Section -->
+    <section id="terms" class="pt-10 max-w-5xl mx-auto px-4">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <span class="badge-primary section-badge sans">নিয়মাবলী</span>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-800 dark:text-emerald-400 mb-4 sans">
+                <i data-lucide="file-text" class="inline-block w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 mb-2"></i>
+                শর্তাবলী
+            </h2>
+            <p class="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto serif">
+                রেজিস্ট্রেশনের আগে অনুগ্রহ করে শর্তাবলী পড়ুন।
+            </p>
+        </div>
+        
+        <div class="terms-card" data-aos="fade-up">
+            <ul class="space-y-6 text-lg serif">
+                <li class="flex items-start gap-4">
+                    <i data-lucide="alert-triangle" class="w-8 h-8 mt-1 text-error"></i>
+                    <div>
+                        <strong class="text-xl block mb-1 sans terms-title">অফেরতযোগ্য রেজিস্ট্রেশন</strong>
+                        <p class="terms-text">সকল রেজিস্ট্রেশন সম্পূর্ণ অফেরতযোগ্য। একবার নিবন্ধন সম্পন্ন হলে কোনো অবস্থাতেই টাকা ফেরত দেওয়া হবে না।</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-4">
+                    <i data-lucide="clock-alert" class="w-8 h-8 mt-1 text-warning"></i>
+                    <div>
+                        <strong class="text-xl block mb-1 sans terms-title">সময়মত পেমেন্ট</strong>
+                        <p class="terms-text">নির্ধারিত সময়ের মধ্যে পেমেন্ট সম্পন্ন করতে হবে, অন্যথায় রেজিস্ট্রেশন স্বয়ংক্রিয়ভাবে বাতিল বলে গণ্য হবে এবং আপনার স্লট অন্যকে দেওয়া হবে।</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-4">
+                    <i data-lucide="ban" class="w-8 h-8 mt-1 text-error"></i>
+                    <div>
+                        <strong class="text-xl block mb-1 sans terms-title">নিষিদ্ধ কার্যকলাপ</strong>
+                        <p class="terms-text">অনুষ্ঠানস্থলে যেকোনো ধরনের রাজনৈতিক, ধর্মীয় বিতর্ক বা অসামাজিক কার্যকলাপ সম্পূর্ণ নিষিদ্ধ। এটি একটি পারিবারিক অনুষ্ঠান।</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-4">
+                    <i data-lucide="file-check" class="w-8 h-8 mt-1 text-info"></i>
+                    <div>
+                        <strong class="text-xl block mb-1 sans terms-title">কর্তৃপক্ষের অধিকার</strong>
+                        <p class="terms-text">কর্তৃপক্ষ যেকোনো সময়, যেকোনো সিদ্ধান্ত পরিবর্তন, পরিমার্জন বা সংশোধন করার সম্পূর্ণ অধিকার সংরক্ষণ করে।</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-4">
+                    <i data-lucide="backpack" class="w-8 h-8 mt-1 text-accent"></i>
+                    <div>
+                        <strong class="text-xl block mb-1 sans terms-title">ব্যক্তিগত দায়িত্ব</strong>
+                        <p class="terms-text">অনুষ্ঠানস্থলে আপনার শিশু এবং ব্যক্তিগত সামগ্রীর সম্পূর্ণ দায়িত্ব আপনার। কোনো কিছু হারিয়ে গেলে বা ক্ষতিগ্রস্ত হলে কর্তৃপক্ষ কোনোভাবেই দায়ী থাকবে না।</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-4">
+                    <i data-lucide="camera" class="w-8 h-8 mt-1 text-primary"></i>
+                    <div>
+                        <strong class="text-xl block mb-1 sans terms-title">ফটোগ্রাফি ও ভিডিও</strong>
+                        <p class="terms-text">অনুষ্ঠানের ছবি ও ভিডিও প্রচারণামূলক উদ্দেশ্যে ব্যবহার করা হতে পারে। রেজিস্ট্রেশন করার মাধ্যমে আপনি এতে সম্মতি প্রদান করছেন।</p>
+                    </div>
+                </li>
+            </ul>
+            
+            <div class="alert alert-info mt-8">
+                <i data-lucide="info" class="w-6 h-6"></i>
+                <span class="serif"><strong class="sans">মনে রাখবেন:</strong> রেজিস্ট্রেশন করার আগে সব শর্ত ভালোভাবে পড়ে নিন। রেজিস্ট্রেশন করলে ধরে নেওয়া হবে যে আপনি সব শর্তে সম্মত।</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20">
+        <div class="modern-card bg-gradient-to-br from-purple-600 to-pink-600 dark:from-purple-900 dark:to-pink-900 text-white text-center p-16 relative overflow-hidden" data-aos="zoom-in">
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute top-10 left-10 w-20 h-20 bg-white rounded-full animate-pulse"></div>
+                <div class="absolute bottom-10 right-10 w-32 h-32 bg-white rounded-full animate-pulse" style="animation-delay: 1s;"></div>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white rounded-full animate-pulse" style="animation-delay: 2s;"></div>
+            </div>
+            <div class="relative z-10">
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-6 sans">
+                    <i data-lucide="party-popper" class="inline-block w-12 h-12 mb-2"></i>
+                    দেরি না করে আজই যুক্ত হন!
+                </h2>
+                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto serif">
+                    স্মৃতির এই অনন্য মুহূর্তে অংশ নিতে এখনই রেজিস্ট্রেশন করুন। সীমিত আসন!
+                </p>
+                <a 
+                    href="#registration-form" 
+                    class="btn btn-lg bg-white text-purple-600 hover:bg-gray-100 border-none px-12 text-xl sans inline-flex items-center gap-2"
+                >
+                    <i data-lucide="zap" class="w-7 h-7"></i>
+                    এখনই রেজিস্ট্রেশন করুন
+                </a>
+                <p class="mt-6 text-sm opacity-90 serif flex items-center justify-center gap-4">
+                    <span class="flex items-center gap-2">
+                        <i data-lucide="clock" class="w-4 h-4"></i>
+                        শেষ তারিখ: ২৫ নভেম্বর, ২০২৫
+                    </span>
+                    <span class="flex items-center gap-2">
+                        <i data-lucide="ticket" class="w-4 h-4"></i>
+                        সীমিত আসন
+                    </span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
