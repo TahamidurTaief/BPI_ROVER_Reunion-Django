@@ -787,65 +787,32 @@
             </div>
         </div>
 
-        <!-- Centered Timeline with Vertical Line -->
+        <!-- Centered Timeline with Vertical Line - DYNAMIC -->
         <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical mt-12">
-            <li data-aos="fade-right">
+            {% for schedule in schedules %}
+            <li data-aos="{% cycle 'fade-right' 'fade-left' %}">
+                {% if not forloop.first %}
+                <hr class="bg-primary"/>
+                {% endif %}
                 <div class="timeline-middle">
-                    <div class="icon-wrapper icon-wrapper-orange">
-                        <i data-lucide="coffee" class="w-6 h-6 text-white"></i>
+                    <div class="icon-wrapper {{ schedule.color_class }}">
+                        <i data-lucide="{{ schedule.icon_class }}" class="w-6 h-6 text-white"></i>
                     </div>
                 </div>
-                <div class="timeline-start md:text-end mb-10">
-                    <time class="font-mono italic text-[var(--info)] font-bold">সকাল ৯:০০ - ১০:০০</time>
-                    <div class="text-2xl font-black sans text-base-content mt-2">রিপোর্টিং ও সকালের নাস্তা</div>
-                    <p class="serif text-base-content/70 mt-2">সকলের উপস্থিতি নিবন্ধন, স্বাগত পানীয়, এবং বিশেষ স্যুভেনির টি-শার্ট ও গিফট সংগ্রহ। সবার সাথে দেখা হওয়ার প্রথম মুহূর্ত!</p>
+                <div class="{% cycle 'timeline-start md:text-end' 'timeline-end' %} mb-10">
+                    <time class="font-mono italic text-[var(--info)] font-bold">{{ schedule.start_time|time:"g:i A" }} - {{ schedule.end_time|time:"g:i A" }}</time>
+                    <div class="text-2xl font-black sans text-base-content mt-2">{{ schedule.title }}</div>
+                    <p class="serif text-base-content/70 mt-2">{{ schedule.description }}</p>
                 </div>
+                {% if not forloop.last %}
                 <hr class="bg-primary"/>
+                {% endif %}
             </li>
-            
-            <li data-aos="fade-left">
-                <hr class="bg-primary"/>
-                <div class="timeline-middle">
-                    <div class="icon-wrapper icon-wrapper-purple">
-                        <i data-lucide="mic" class="w-6 h-6 text-white"></i>
-                    </div>
-                </div>
-                <div class="timeline-end mb-10">
-                    <time class="font-mono italic text-[var(--info)] font-bold">সকাল ১০:০০ - ১১:৩০</time>
-                    <div class="text-2xl font-black sans text-base-content mt-2">উদ্বোধনী অনুষ্ঠান ও স্মৃতিচারণ</div>
-                    <p class="serif text-base-content/70 mt-2">প্রধান অতিথির ভাষণ, প্রাক্তন সদস্যদের স্মৃতিচারণ, পুরোনো ছবি ও ভিডিও প্রদর্শনী। সেই দিনগুলো ফিরে আসবে!</p>
-                </div>
-                <hr class="bg-primary"/>
+            {% empty %}
+            <li class="text-center text-base-content/70 py-8">
+                <p class="text-xl serif">কোনো সময়সূচী পাওয়া যায়নি।</p>
             </li>
-            
-            <li data-aos="fade-right">
-                <hr class="bg-primary"/>
-                <div class="timeline-middle">
-                    <div class="icon-wrapper icon-wrapper-green">
-                        <i data-lucide="utensils" class="w-6 h-6 text-white"></i>
-                    </div>
-                </div>
-                <div class="timeline-start md:text-end mb-10">
-                    <time class="font-mono italic text-[var(--info)] font-bold">দুপুর ১:৩০ - ২:৩০</time>
-                    <div class="text-2xl font-black sans text-base-content mt-2">দুপুরের খাবার ও নামাজ</div>
-                    <p class="serif text-base-content/70 mt-2">বিশেষ বুফে লাঞ্চ - কাচ্চি বিরিয়ানি, চিকেন রোস্ট, এবং আরও অনেক কিছু! খাবারের পাশাপাশি গল্প আর হাসি।</p>
-                </div>
-                <hr class="bg-primary"/>
-            </li>
-            
-            <li data-aos="fade-left">
-                <hr class="bg-primary"/>
-                <div class="timeline-middle">
-                    <div class="icon-wrapper icon-wrapper-blue">
-                        <i data-lucide="gift" class="w-6 h-6 text-white"></i>
-                    </div>
-                </div>
-                <div class="timeline-end mb-10">
-                    <time class="font-mono italic text-[var(--info)]font-bold">বিকাল ৪:০০ - ৫:০০</time>
-                    <div class="text-2xl font-black sans text-base-content mt-2">সমাপনী ও র‍্যাফেল ড্র</div>
-                    <p class="serif text-base-content/70 mt-2">আকর্ষণীয় পুরস্কার বিতরণ, র‍্যাফেল ড্র, গ্রুপ ফটো সেশন এবং বিদায়ী সম্ভাষণ। শেষ হবে কিন্তু স্মৃতি থাকবে চিরকাল!</p>
-                </div>
-            </li>
+            {% endfor %}
         </ul>
     </section>
     
@@ -864,85 +831,36 @@
             </p>
         </div>
         
+        <!-- DYNAMIC Food Menu Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="food-card food-card-breakfast shadow-2xl p-8 relative overflow-hidden" data-aos="zoom-in" data-aos-delay="100">
+            {% for category in meal_categories %}
+            <div class="food-card {{ category.card_color_class }} shadow-2xl p-8 relative overflow-hidden" data-aos="zoom-in" data-aos-delay="{{ forloop.counter }}00">
                 <div class="relative z-10">
-                    <i data-lucide="coffee" class="w-16 h-16 mb-4"></i>
-                    <h3 class="text-3xl font-bold mb-6 sans">সকালের নাস্তা</h3>
+                    <i data-lucide="{{ category.icon_class }}" class="w-16 h-16 mb-4"></i>
+                    <h3 class="text-3xl font-bold mb-6 sans">{{ category.name }}</h3>
                     <ul class="space-y-3 text-lg serif">
+                        {% for food in category.food_items.all %}
+                        {% if food.is_active %}
                         <li class="flex items-center gap-3">
-                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
-                            <span>পরোটা (২টি) - গরম গরম</span>
+                            <i data-lucide="{{ food.icon_class }}" class="w-5 h-5"></i>
+                            <span>
+                                {{ food.name }}
+                                {% if food.quantity %}({{ food.quantity }}){% endif %}
+                                {% if food.description %} - {{ food.description }}{% endif %}
+                            </span>
                         </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
-                            <span>সবজি ভাজি - তাজা</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
-                            <span>ডিম ওমলেট - স্পেশাল</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
-                            <span>মিনারেল ওয়াটার</span>
-                        </li>
+                        {% endif %}
+                        {% empty %}
+                        <li class="text-base opacity-80">কোনো খাবার যুক্ত করা হয়নি।</li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
-            
-            <div class="food-card food-card-lunch shadow-2xl p-8 relative overflow-hidden" data-aos="zoom-in" data-aos-delay="200">
-                <div class="relative z-10">
-                    <i data-lucide="soup" class="w-16 h-16 mb-4"></i>
-                    <h3 class="text-3xl font-bold mb-6 sans">দুপুরের খাবার</h3>
-                    <ul class="space-y-3 text-lg serif">
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
-                            <span>কাচ্চি বিরিয়ানি (বাসমতি)</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
-                            <span>চিকেন রোস্ট - জুসি</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
-                            <span>কাবাব - স্পাইসি</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
-                            <span>বোরহানি - ঠান্ডা</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
-                            <span>মিষ্টি - মুখ মিষ্টি করার জন্য</span>
-                        </li>
-                    </ul>
-                </div>
+            {% empty %}
+            <div class="col-span-full text-center p-12">
+                <p class="text-xl text-base-content/70 serif">কোনো খাবার তালিকা পাওয়া যায়নি।</p>
             </div>
-            
-            <div class="food-card food-card-snacks shadow-2xl p-8 relative overflow-hidden" data-aos="zoom-in" data-aos-delay="300">
-                <div class="relative z-10">
-                    <i data-lucide="cup-soda" class="w-16 h-16 mb-4"></i>
-                    <h3 class="text-3xl font-bold mb-6 sans">বিকালের নাস্তা</h3>
-                    <ul class="space-y-3 text-lg serif">
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
-                            <span>সিঙ্গারা / সমুচা - কুরকুরে</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
-                            <span>চা / কফি - গরম</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
-                            <span>বিস্কুট - মচমচে</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
-                            <span>চকলেট - মিষ্টি</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </section>
 
@@ -972,166 +890,28 @@
             </p>
         </div>
         
+        <!-- DYNAMIC FAQ Items -->
         <div class="space-y-3 sm:space-y-4" data-aos="fade-up">
-            <!-- FAQ Item 1 -->
-            <div class="faq-item faq-item-purple collapse collapse-plus rounded-xl sm:rounded-2xl shadow-md hover:shadow-2xl">
-                <input type="radio" name="my-accordion-3" checked="checked" /> 
+            {% for faq in faqs %}
+            <div class="faq-item {{ faq.style_class }} collapse collapse-plus rounded-xl sm:rounded-2xl shadow-md hover:shadow-2xl">
+                <input type="radio" name="my-accordion-3" {% if forloop.first and faq.is_expanded_by_default %}checked="checked"{% endif %} /> 
                 <div class="collapse-title text-base sm:text-lg md:text-xl font-bold flex items-center gap-2 sm:gap-3 sans">
                     <div class="faq-icon-wrapper flex-shrink-0">
-                        <i data-lucide="dollar-sign" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
+                        <i data-lucide="{{ faq.icon_class }}" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
                     </div>
-                    <span>রেজিস্ট্রেশন ফি কত?</span>
+                    <span>{{ faq.question }}</span>
                 </div>
                 <div class="collapse-content text-sm sm:text-base md:text-lg serif"> 
-                    <div class="space-y-3 sm:space-y-4 mt-2">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--color-ex-student), 0.1); border-color: var(--color-ex-student);">
-                                <span class="badge badge-ex-student text-xs sm:text-sm whitespace-nowrap">প্রাক্তন রোভার</span>
-                                <span class="font-bold text-lg sm:text-xl" style="color: var(--color-ex-student);">৫০০ টাকা</span>
-                            </div>
-                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--color-teacher), 0.1); border-color: var(--color-teacher);">
-                                <span class="badge badge-teacher text-xs sm:text-sm whitespace-nowrap">স্পাউস/গেস্ট</span>
-                                <span class="font-bold text-lg sm:text-xl" style="color: var(--color-teacher);">৪০০ টাকা</span>
-                            </div>
-                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--color-student), 0.1); border-color: var(--color-student);">
-                                <span class="badge badge-student text-xs sm:text-sm whitespace-nowrap">শিশু (৫ বছর+)</span>
-                                <span class="font-bold text-lg sm:text-xl" style="color: var(--color-student);">৩০০ টাকা</span>
-                            </div>
-                        </div>
-                        <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border-l-4" style="background: rgba(var(--warning), 0.1); border-color: var(--warning);">
-                            <p class="text-xs sm:text-sm flex items-start gap-2">
-                                <i data-lucide="alert-triangle" class="w-4 h-4 sm:w-5 sm:h-5 mt-0.5 flex-shrink-0" style="color: var(--warning);"></i>
-                                <span>৫ বছরের কম শিশুদের জন্য কোন ফি নেই কিন্তু খাবার ও গিফট পাবে না।</span>
-                            </p>
-                        </div>
+                    <div class="mt-2">
+                        {{ faq.answer|safe }}
                     </div>
                 </div>
             </div>
-            
-            <!-- FAQ Item 2 -->
-            <div class="faq-item faq-item-blue collapse collapse-plus rounded-xl sm:rounded-2xl shadow-md hover:shadow-2xl">
-                <input type="radio" name="my-accordion-3" /> 
-                <div class="collapse-title text-base sm:text-lg md:text-xl font-bold flex items-center gap-2 sm:gap-3 sans">
-                    <div class="faq-icon-wrapper flex-shrink-0">
-                        <i data-lucide="file-text" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
-                    </div>
-                    <span>আমি কি স্পট রেজিস্ট্রেশন করতে পারব?</span>
-                </div>
-                <div class="collapse-content text-sm sm:text-base md:text-lg serif"> 
-                    <div class="space-y-3 sm:space-y-4 mt-2">
-                        <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border-l-4" style="background: rgba(var(--error), 0.1); border-color: var(--error);">
-                            <p class="flex items-start gap-2">
-                                <i data-lucide="x-circle" class="w-5 h-5 sm:w-6 sm:h-6 mt-0.5 flex-shrink-0" style="color: var(--error);"></i>
-                                <span><strong>না, দুঃখিত।</strong> খাবারের আয়োজন এবং উপহার নিশ্চিত করার জন্য আমাদের আগে থেকেই রেজিস্ট্রেশন বন্ধ করতে হবে।</span>
-                            </p>
-                        </div>
-                        <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border" style="background: rgba(var(--warning), 0.1); border-color: var(--warning);">
-                            <div class="flex items-start gap-2 sm:gap-3">
-                                <i data-lucide="alert-triangle" class="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" style="color: var(--warning);"></i>
-                                <div>
-                                    <p class="font-bold mb-1">গুরুত্বপূর্ণ:</p>
-                                    <p>স্পট রেজিস্ট্রেশনের কোনো সুযোগ নেই। তাই এখনই রেজিস্ট্রেশন সম্পন্ন করুন!</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            {% empty %}
+            <div class="text-center p-12">
+                <p class="text-xl text-base-content/70 serif">কোনো প্রশ্ন পাওয়া যায়নি।</p>
             </div>
-            
-            <!-- FAQ Item 3 -->
-            <div class="faq-item faq-item-green collapse collapse-plus rounded-xl sm:rounded-2xl shadow-md hover:shadow-2xl">
-                <input type="radio" name="my-accordion-3" /> 
-                <div class="collapse-title text-base sm:text-lg md:text-xl font-bold flex items-center gap-2 sm:gap-3 sans">
-                    <div class="faq-icon-wrapper flex-shrink-0">
-                        <i data-lucide="users" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
-                    </div>
-                    <span>আমি কি আমার পরিবারকে সাথে আনতে পারব?</span>
-                </div>
-                <div class="collapse-content text-sm sm:text-base md:text-lg serif"> 
-                    <div class="space-y-3 sm:space-y-4 mt-2">
-                        <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border-l-4" style="background: rgba(var(--success), 0.1); border-color: var(--success);">
-                            <p class="flex items-start gap-2">
-                                <i data-lucide="check-circle" class="w-5 h-5 sm:w-6 sm:h-6 mt-0.5 flex-shrink-0" style="color: var(--success);"></i>
-                                <span><strong>হ্যাঁ, অবশ্যই!</strong> পরিবারের সবাইকে নিয়ে আসুন। আপনার প্রিয়জনদের সাথে এই বিশেষ মুহূর্তগুলো শেয়ার করুন।</span>
-                            </p>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                            <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--color-teacher), 0.1); border-color: var(--color-teacher);">
-                                <div class="flex items-start gap-2">
-                                    <i data-lucide="heart" class="w-5 h-5 flex-shrink-0 mt-0.5" style="color: var(--color-teacher);"></i>
-                                    <div>
-                                        <p class="font-bold text-sm sm:text-base mb-1">স্পাউস/গেস্ট</p>
-                                        <p class="text-xs sm:text-sm">Spouse/Guest ক্যাটাগরিতে রেজিস্ট্রেশন করুন</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--info), 0.1); border-color: var(--info);">
-                                <div class="flex items-start gap-2">
-                                    <i data-lucide="baby" class="w-5 h-5 flex-shrink-0 mt-0.5" style="color: var(--info);"></i>
-                                    <div>
-                                        <p class="font-bold text-sm sm:text-base mb-1">শিশু (৫ বছর+)</p>
-                                        <p class="text-xs sm:text-sm">Children ক্যাটাগরিতে রেজিস্ট্রেশন করুন</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--color-ex-student), 0.1); border-color: var(--color-ex-student);">
-                                <div class="flex items-start gap-2">
-                                    <i data-lucide="milk" class="w-5 h-5 flex-shrink-0 mt-0.5" style="color: var(--color-ex-student);"></i>
-                                    <div>
-                                        <p class="font-bold text-sm sm:text-base mb-1">শিশু (৫ বছরের কম)</p>
-                                        <p class="text-xs sm:text-sm">ফ্রি এন্ট্রি (খাবার ও গিফট ছাড়া)</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- FAQ Item 4 -->
-            <div class="faq-item faq-item-orange collapse collapse-plus rounded-xl sm:rounded-2xl shadow-md hover:shadow-2xl">
-                <input type="radio" name="my-accordion-3" /> 
-                <div class="collapse-title text-base sm:text-lg md:text-xl font-bold flex items-center gap-2 sm:gap-3 sans">
-                    <div class="faq-icon-wrapper flex-shrink-0">
-                        <i data-lucide="credit-card" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
-                    </div>
-                    <span>পেমেন্ট কিভাবে করব?</span>
-                </div>
-                <div class="collapse-content text-sm sm:text-base md:text-lg serif"> 
-                    <div class="space-y-3 sm:space-y-4 mt-2">
-                        <p class="font-medium">রেজিস্ট্রেশন সম্পন্ন করার পর আপনাকে পেমেন্ট অপশন দেখানো হবে। পেমেন্ট পদ্ধতি:</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                            <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--success), 0.1); border-color: var(--success);">
-                                <div class="flex items-start gap-2">
-                                    <i data-lucide="smartphone" class="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" style="color: var(--success);"></i>
-                                    <div>
-                                        <p class="font-bold text-sm sm:text-base">মোবাইল ব্যাংকিং</p>
-                                        <p class="text-xs sm:text-sm mt-1">বিকাশ / নগদ / রকেট</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--info), 0.1); border-color: var(--info);">
-                                <div class="flex items-start gap-2">
-                                    <i data-lucide="landmark" class="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" style="color: var(--info);"></i>
-                                    <div>
-                                        <p class="font-bold text-sm sm:text-base">ব্যাংক ট্রান্সফার</p>
-                                        <p class="text-xs sm:text-sm mt-1">সরাসরি হিসাবে</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-3 sm:p-4 rounded-lg sm:rounded-xl border hover:scale-105 transition-transform" style="background: rgba(var(--warning), 0.1); border-color: var(--warning);">
-                                <div class="flex items-start gap-2">
-                                    <i data-lucide="banknote" class="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" style="color: var(--warning);"></i>
-                                    <div>
-                                        <p class="font-bold text-sm sm:text-base">ক্যাশ পেমেন্ট</p>
-                                        <p class="text-xs sm:text-sm mt-1">নির্দিষ্ট সংগ্রাহকের কাছে</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </section>
 
@@ -1181,50 +961,22 @@
             </p>
         </div>
         
+        <!-- DYNAMIC Terms List -->
         <div class="terms-card" data-aos="fade-up">
             <ul class="space-y-6 text-lg serif">
+                {% for term in terms %}
                 <li class="flex items-start gap-4">
-                    <i data-lucide="alert-triangle" class="w-8 h-8 mt-1 text-error"></i>
+                    <i data-lucide="{{ term.icon_class }}" class="w-8 h-8 mt-1 {{ term.icon_color_class }}"></i>
                     <div>
-                        <strong class="text-xl block mb-1 sans terms-title">অফেরতযোগ্য রেজিস্ট্রেশন</strong>
-                        <p class="terms-text">সকল রেজিস্ট্রেশন সম্পূর্ণ অফেরতযোগ্য। একবার নিবন্ধন সম্পন্ন হলে কোনো অবস্থাতেই টাকা ফেরত দেওয়া হবে না।</p>
+                        <strong class="text-xl block mb-1 sans terms-title">{{ term.title }}</strong>
+                        <p class="terms-text">{{ term.description }}</p>
                     </div>
                 </li>
-                <li class="flex items-start gap-4">
-                    <i data-lucide="clock-alert" class="w-8 h-8 mt-1 text-warning"></i>
-                    <div>
-                        <strong class="text-xl block mb-1 sans terms-title">সময়মত পেমেন্ট</strong>
-                        <p class="terms-text">নির্ধারিত সময়ের মধ্যে পেমেন্ট সম্পন্ন করতে হবে, অন্যথায় রেজিস্ট্রেশন স্বয়ংক্রিয়ভাবে বাতিল বলে গণ্য হবে এবং আপনার স্লট অন্যকে দেওয়া হবে।</p>
-                    </div>
+                {% empty %}
+                <li class="text-center py-8">
+                    <p class="text-xl text-base-content/70">কোনো শর্ত পাওয়া যায়নি।</p>
                 </li>
-                <li class="flex items-start gap-4">
-                    <i data-lucide="ban" class="w-8 h-8 mt-1 text-error"></i>
-                    <div>
-                        <strong class="text-xl block mb-1 sans terms-title">নিষিদ্ধ কার্যকলাপ</strong>
-                        <p class="terms-text">অনুষ্ঠানস্থলে যেকোনো ধরনের রাজনৈতিক, ধর্মীয় বিতর্ক বা অসামাজিক কার্যকলাপ সম্পূর্ণ নিষিদ্ধ। এটি একটি পারিবারিক অনুষ্ঠান।</p>
-                    </div>
-                </li>
-                <li class="flex items-start gap-4">
-                    <i data-lucide="file-check" class="w-8 h-8 mt-1 text-info"></i>
-                    <div>
-                        <strong class="text-xl block mb-1 sans terms-title">কর্তৃপক্ষের অধিকার</strong>
-                        <p class="terms-text">কর্তৃপক্ষ যেকোনো সময়, যেকোনো সিদ্ধান্ত পরিবর্তন, পরিমার্জন বা সংশোধন করার সম্পূর্ণ অধিকার সংরক্ষণ করে।</p>
-                    </div>
-                </li>
-                <li class="flex items-start gap-4">
-                    <i data-lucide="backpack" class="w-8 h-8 mt-1 text-accent"></i>
-                    <div>
-                        <strong class="text-xl block mb-1 sans terms-title">ব্যক্তিগত দায়িত্ব</strong>
-                        <p class="terms-text">অনুষ্ঠানস্থলে আপনার শিশু এবং ব্যক্তিগত সামগ্রীর সম্পূর্ণ দায়িত্ব আপনার। কোনো কিছু হারিয়ে গেলে বা ক্ষতিগ্রস্ত হলে কর্তৃপক্ষ কোনোভাবেই দায়ী থাকবে না।</p>
-                    </div>
-                </li>
-                <li class="flex items-start gap-4">
-                    <i data-lucide="camera" class="w-8 h-8 mt-1 text-primary"></i>
-                    <div>
-                        <strong class="text-xl block mb-1 sans terms-title">ফটোগ্রাফি ও ভিডিও</strong>
-                        <p class="terms-text">অনুষ্ঠানের ছবি ও ভিডিও প্রচারণামূলক উদ্দেশ্যে ব্যবহার করা হতে পারে। রেজিস্ট্রেশন করার মাধ্যমে আপনি এতে সম্মতি প্রদান করছেন।</p>
-                    </div>
-                </li>
+                {% endfor %}
             </ul>
             
             <div class="alert alert-info mt-8">
