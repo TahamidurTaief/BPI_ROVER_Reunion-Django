@@ -37,6 +37,7 @@
   /* Amber */
   --error: #dc2626;
   /* Red */
+  --desc : rgb(255, 255, 255);
   
   /* Role Colors - Navy Blue themed */
   --color-student: #2563eb;
@@ -95,6 +96,8 @@
   --warning: #fbbf24;
   /* Bright Amber */
   --error: #f87171;
+
+  --desc : white;
   /* Bright Red */
   
   /* Role Colors - Dark Mode Vibrant */
